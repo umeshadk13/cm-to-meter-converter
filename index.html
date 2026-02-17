@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CM to Meter Converter</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #999;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .converter-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: #667eea;
+            border-radius: 2px;
+            margin-right: 10px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .result-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .result-label {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #e0e0e0, transparent);
+            margin: 30px 0;
+        }
+
+        .info-section {
+            background: #f5f7ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 30px;
+        }
+
+        .info-section h3 {
+            color: #667eea;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .info-section p {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        .info-section p:last-child {
+            margin-bottom: 0;
+        }
+
+        .formula {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            color: #667eea;
+            text-align: center;
+            margin-top: 8px;
+        }
+
+        .conversion-history {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .history-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .history-item {
+            font-size: 12px;
+            color: #666;
+            padding: 5px;
+            margin: 3px 0;
+            background: white;
+            border-radius: 4px;
+            padding-left: 10px;
+            border-left: 3px solid #667eea;
+        }
+
+        .clear-btn {
+            background: #e0e0e0;
+            color: #666;
+            margin-top: 10px;
+            font-size: 12px;
+            padding: 8px;
+        }
+
+        .clear-btn:hover {
+            background: #d0d0d0;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📏 CM ↔ Meter Converter</h1>
+        <p class="subtitle">Convert between centimeters and meters instantly</p>
+
+        <!-- CM to Meter Section -->
+        <div class="converter-section">
+            <div class="section-title">Centimeters to Meters</div>
+            <div class="input-group">
+                <label for="cmInput">Enter Centimeters (cm)</label>
+                <input type="number" id="cmInput" placeholder="0.00" step="0.01">
+            </div>
+            <div class="result-box">
+                <div>
+                    <div class="result-label">Result in Meters</div>
+                    <div id="cmToMeterResult">0.00 m</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Meter to CM Section -->
+        <div class="converter-section">
+            <div class="section-title">Meters to Centimeters</div>
+            <div class="input-group">
+                <label for="meterInput">Enter Meters (m)</label>
+                <input type="number" id="meterInput" placeholder="0.00" step="0.01">
+            </div>
+            <div class="result-box">
+                <div>
+                    <div class="result-label">Result in Centimeters</div>
+                    <div id="meterToCmResult">0.00 cm</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Conversion History -->
+        <div class="conversion-history">
+            <div class="history-title">📋 Conversion History</div>
+            <div id="historyList">
+                <div class="history-item">No conversions yet</div>
+            </div>
+            <button class="clear-btn" onclick="clearHistory()">Clear History</button>
+        </div>
+
+        <!-- Information Section -->
+        <div class="info-section">
+            <h3>💡 Quick Facts</h3>
+            <p><strong>1 meter = 100 centimeters</strong></p>
+            <p>1 cm = 0.01 meters</p>
+            <div class="formula">
+                cm ÷ 100 = m <br>
+                m × 100 = cm
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const cmInput = document.getElementById('cmInput');
+        const meterInput = document.getElementById('meterInput');
+        const cmToMeterResult = document.getElementById('cmToMeterResult');
+        const meterToCmResult = document.getElementById('meterToCmResult');
+        const historyList = document.getElementById('historyList');
+        let conversions = [];
+
+        // CM to Meter conversion
+        cmInput.addEventListener('input', function() {
+            const cm = parseFloat(this.value) || 0;
+            const meters = (cm / 100).toFixed(2);
+            cmToMeterResult.textContent = meters + ' m';
+            
+            if (this.value) {
+                addToHistory(`${cm} cm → ${meters} m`);
+            }
+        });
+
+        // Meter to CM conversion
+        meterInput.addEventListener('input', function() {
+            const meters = parseFloat(this.value) || 0;
+            const cm = (meters * 100).toFixed(2);
+            meterToCmResult.textContent = cm + ' cm';
+            
+            if (this.value) {
+                addToHistory(`${meters} m → ${cm} cm`);
+            }
+        });
+
+        // Add to history
+        function addToHistory(conversion) {
+            if (!conversions.includes(conversion)) {
+                conversions.unshift(conversion);
+                if (conversions.length > 5) {
+                    conversions.pop();
+                }
+                updateHistoryDisplay();
+            }
+        }
+
+        // Update history display
+        function updateHistoryDisplay() {
+            if (conversions.length === 0) {
+                historyList.innerHTML = '<div class="history-item">No conversions yet</div>';
+                return;
+            }
+            
+            historyList.innerHTML = conversions
+                .map(conv => `<div class="history-item">✓ ${conv}</div>`)
+                .join('');
+        }
+
+        // Clear history
+        function clearHistory() {
+            conversions = [];
+            updateHistoryDisplay();
+        }
+    </script>
+</body>
+</html>
